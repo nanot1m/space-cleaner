@@ -1,0 +1,91 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://scripts/Main.gd" id="1_main"]
+[ext_resource type="PackedScene" path="res://scenes/Earth.tscn" id="2_earth"]
+[ext_resource type="PackedScene" path="res://scenes/SpaceStation.tscn" id="3_station"]
+[ext_resource type="PackedScene" path="res://scenes/Astronaut.tscn" id="4_astronaut"]
+[ext_resource type="PackedScene" path="res://scenes/Ship.tscn" id="5_ship"]
+[ext_resource type="Script" path="res://scripts/StationIndicator.gd" id="6_indicator"]
+[ext_resource type="Script" path="res://scripts/Minimap.gd" id="7_minimap"]
+[ext_resource type="PackedScene" path="res://scenes/Moon.tscn" id="8_moon"]
+[ext_resource type="Script" path="res://scripts/TetherOverlay.gd" id="9_tether"]
+[ext_resource type="Script" path="res://scripts/TrashLayer.gd" id="10_trash"]
+[ext_resource type="AudioStream" path="res://assets/sounds/chiphead64 - endgame.mp3" id="11_music"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_main")
+
+[node name="Earth" parent="." instance=ExtResource("2_earth")]
+
+[node name="Station" parent="." instance=ExtResource("3_station")]
+
+[node name="Moon" parent="." instance=ExtResource("8_moon")]
+
+[node name="MoonStation" parent="." instance=ExtResource("3_station")]
+
+[node name="Astronaut" parent="." instance=ExtResource("4_astronaut")]
+
+[node name="Ship" parent="." instance=ExtResource("5_ship")]
+
+[node name="Trash" type="Node2D" parent="."]
+script = ExtResource("10_trash")
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_music")
+autoplay = true
+
+[node name="TetherOverlay" type="Node2D" parent="."]
+script = ExtResource("9_tether")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(1.1, 1.1)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Margin" type="MarginContainer" parent="UI"]
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 420.0
+offset_bottom = 180.0
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="Panel" type="PanelContainer" parent="UI/Margin"]
+
+[node name="VBox" type="VBoxContainer" parent="UI/Margin/Panel"]
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="UI/Margin/Panel/VBox"]
+text = "Orbital Space Cleaner"
+
+[node name="Status" type="Label" parent="UI/Margin/Panel/VBox"]
+text = "Status"
+
+[node name="Hint" type="Label" parent="UI/Margin/Panel/VBox"]
+text = "Left/Right steer the station orbit. Press E to board or dock. In the ship: Left/Right rotate, Up thrusts, Down brakes. Drag up to 5 scrap."
+autowrap_mode = 3
+
+[node name="BuildBotButton" type="Button" parent="UI/Margin/Panel/VBox"]
+visible = false
+text = "Build Bot"
+
+[node name="StationIndicator" type="Control" parent="UI"]
+visible = false
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 36.0
+offset_bottom = 36.0
+mouse_filter = 2
+script = ExtResource("6_indicator")
+
+[node name="Minimap" type="Control" parent="UI"]
+custom_minimum_size = Vector2(180, 180)
+offset_left = 1076.0
+offset_top = 16.0
+offset_right = 1256.0
+offset_bottom = 196.0
+mouse_filter = 2
+script = ExtResource("7_minimap")
