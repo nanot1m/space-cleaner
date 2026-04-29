@@ -48,7 +48,6 @@ func _ready() -> void:
 
 	var station_angle := -0.3
 	station.position = Vector2.RIGHT.rotated(station_angle) * World.ORBIT_RADIUS
-	station.rotation = station_angle + PI * 0.5
 	station_velocity = Vector2.RIGHT.rotated(station_angle + PI * 0.5) * sqrt(World.EARTH_GRAVITY_MU / World.ORBIT_RADIUS)
 
 	moon.position = Vector2.RIGHT.rotated(moon_angle) * MOON_ORBIT_RADIUS
@@ -56,7 +55,6 @@ func _ready() -> void:
 	World.moon_position = moon.position
 	var moon_station_angle := -0.6
 	moon_station.position = moon.position + Vector2.RIGHT.rotated(moon_station_angle) * MOON_STATION_ORBIT_RADIUS
-	moon_station.rotation = moon_station_angle + PI * 0.5
 	var moon_vel := Vector2.RIGHT.rotated(moon_angle + PI * 0.5) * MOON_ORBIT_RADIUS * MOON_ANGULAR_SPEED
 	moon_station_velocity = moon_vel + Vector2.RIGHT.rotated(moon_station_angle + PI * 0.5) * sqrt(World.MOON_GRAVITY_MU / MOON_STATION_ORBIT_RADIUS)
 
@@ -92,7 +90,6 @@ func _input(event: InputEvent) -> void:
 func _update_station(delta: float) -> void:
 	station_velocity += World.calculate_gravity(station.position) * delta
 	station.position = World.wrap_position(station.position + station_velocity * delta)
-	station.rotation = station.position.angle() + PI * 0.5
 
 	if not is_piloting_ship and not is_docking and current_station != null:
 		ship.position = _dock_anchor(current_station)
@@ -110,7 +107,6 @@ func _update_moon_system(delta: float) -> void:
 
 	moon_station_velocity += World.calculate_gravity(moon_station.position) * delta
 	moon_station.position = World.wrap_position(moon_station.position + moon_station_velocity * delta)
-	moon_station.rotation = (moon_station.position - moon.position).angle() + PI * 0.5
 
 
 func _toggle_ship_interaction() -> void:
