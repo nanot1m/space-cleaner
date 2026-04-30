@@ -1,16 +1,16 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=12 format=3 uid="uid://b7qk28ui0qfua"]
 
-[ext_resource type="Script" path="res://scripts/Main.gd" id="1_main"]
+[ext_resource type="Script" uid="uid://dmoplcoc3pp5y" path="res://scripts/Main.gd" id="1_main"]
 [ext_resource type="PackedScene" path="res://scenes/Earth.tscn" id="2_earth"]
 [ext_resource type="PackedScene" path="res://scenes/SpaceStation.tscn" id="3_station"]
 [ext_resource type="PackedScene" path="res://scenes/Astronaut.tscn" id="4_astronaut"]
-[ext_resource type="PackedScene" path="res://scenes/Ship.tscn" id="5_ship"]
-[ext_resource type="Script" path="res://scripts/StationIndicator.gd" id="6_indicator"]
-[ext_resource type="Script" path="res://scripts/Minimap.gd" id="7_minimap"]
+[ext_resource type="PackedScene" uid="uid://0raao8blvswi" path="res://scenes/Ship.tscn" id="5_ship"]
+[ext_resource type="Script" uid="uid://b77dr3k1kykax" path="res://scripts/StationIndicator.gd" id="6_indicator"]
+[ext_resource type="Script" uid="uid://o21nc7o10b5i" path="res://scripts/Minimap.gd" id="7_minimap"]
 [ext_resource type="PackedScene" path="res://scenes/Moon.tscn" id="8_moon"]
-[ext_resource type="Script" path="res://scripts/TetherOverlay.gd" id="9_tether"]
-[ext_resource type="Script" path="res://scripts/TrashLayer.gd" id="10_trash"]
-[ext_resource type="AudioStream" path="res://assets/sounds/chiphead64 - endgame.mp3" id="11_music"]
+[ext_resource type="AudioStream" uid="uid://dm2qqy8usa1f6" path="res://assets/sounds/Orbital Drift.mp3" id="8_wp0k4"]
+[ext_resource type="Script" uid="uid://cuv28qjrlfm36" path="res://scripts/TetherOverlay.gd" id="9_tether"]
+[ext_resource type="Script" uid="uid://b2c8p1qu3lpij" path="res://scripts/TrashLayer.gd" id="10_trash"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_main")
@@ -31,7 +31,7 @@ script = ExtResource("1_main")
 script = ExtResource("10_trash")
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("11_music")
+stream = ExtResource("8_wp0k4")
 autoplay = true
 
 [node name="TetherOverlay" type="Node2D" parent="."]
@@ -53,22 +53,28 @@ theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
 [node name="Panel" type="PanelContainer" parent="UI/Margin"]
+layout_mode = 2
 
 [node name="VBox" type="VBoxContainer" parent="UI/Margin/Panel"]
+layout_mode = 2
 theme_override_constants/separation = 10
 
 [node name="Title" type="Label" parent="UI/Margin/Panel/VBox"]
+layout_mode = 2
 text = "Orbital Space Cleaner"
 
 [node name="Status" type="Label" parent="UI/Margin/Panel/VBox"]
+layout_mode = 2
 text = "Status"
 
 [node name="Hint" type="Label" parent="UI/Margin/Panel/VBox"]
+layout_mode = 2
 text = "Left/Right steer the station orbit. Press E to board or dock. In the ship: Left/Right rotate, Up thrusts, Down brakes. Drag up to 5 scrap."
 autowrap_mode = 3
 
 [node name="BuildBotButton" type="Button" parent="UI/Margin/Panel/VBox"]
 visible = false
+layout_mode = 2
 text = "Build Bot"
 
 [node name="StationIndicator" type="Control" parent="UI"]
@@ -83,6 +89,8 @@ script = ExtResource("6_indicator")
 
 [node name="Minimap" type="Control" parent="UI"]
 custom_minimum_size = Vector2(180, 180)
+layout_mode = 3
+anchors_preset = 0
 offset_left = 1076.0
 offset_top = 16.0
 offset_right = 1256.0
