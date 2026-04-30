@@ -1,6 +1,6 @@
 extends Node2D
 
-const MOON_ORBIT_RADIUS := 9048.0
+const MOON_ORBIT_RADIUS := 1600.0
 const MOON_RADIUS := 40.9
 const MOON_ANGULAR_SPEED := 0.02
 const MOON_STATION_ORBIT_RADIUS := 92.0
@@ -8,7 +8,7 @@ const STATION_DOCK_OFFSET := Vector2(32, 0)
 const STATION_ASTRONAUT_OFFSET := Vector2(-18, -12)
 const DOCK_DISTANCE := 36.0
 const CAMERA_ZOOM_STEP := 0.12
-const CAMERA_MIN_ZOOM := 0.45
+const CAMERA_MIN_ZOOM := 0.25
 const CAMERA_MAX_ZOOM := 2.4
 
 var moon_angle := 1.2
