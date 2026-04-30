@@ -48,7 +48,7 @@ func _ready() -> void:
 
 	var station_angle := -0.3
 	station.position = Vector2.RIGHT.rotated(station_angle) * World.ORBIT_RADIUS
-	station_velocity = Vector2.RIGHT.rotated(station_angle + PI * 0.5) * sqrt(World.EARTH_GRAVITY_MU / World.ORBIT_RADIUS)
+	station_velocity = Vector2.RIGHT.rotated(station_angle - PI * 0.5) * sqrt(World.EARTH_GRAVITY_MU / World.ORBIT_RADIUS)
 
 	moon.position = Vector2.RIGHT.rotated(moon_angle) * MOON_ORBIT_RADIUS
 	moon.rotation = moon_angle * 0.35
@@ -56,7 +56,7 @@ func _ready() -> void:
 	var moon_station_angle := -0.6
 	moon_station.position = moon.position + Vector2.RIGHT.rotated(moon_station_angle) * MOON_STATION_ORBIT_RADIUS
 	var moon_vel := Vector2.RIGHT.rotated(moon_angle + PI * 0.5) * MOON_ORBIT_RADIUS * MOON_ANGULAR_SPEED
-	moon_station_velocity = moon_vel + Vector2.RIGHT.rotated(moon_station_angle + PI * 0.5) * sqrt(World.MOON_GRAVITY_MU / MOON_STATION_ORBIT_RADIUS)
+	moon_station_velocity = moon_vel + Vector2.RIGHT.rotated(moon_station_angle - PI * 0.5) * sqrt(World.MOON_GRAVITY_MU / MOON_STATION_ORBIT_RADIUS)
 
 	_reset_docked_ship()
 	trash_layer.spawn_initial()
