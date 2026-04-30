@@ -116,12 +116,11 @@ func _toggle_ship_interaction() -> void:
 			and World.wrapped_distance(ship.position, current_station.position) <= DOCK_DISTANCE:
 		is_undocking = true
 		astronaut.set_anim_row(1)
-		var arc_from: Vector2 = astronaut.position
-		var arc_to: Vector2 = ship.position
-		var arc_out: Vector2 = ((arc_from + arc_to) * 0.5).normalized()
+		var anchor: Node2D = current_station
 		var tween := create_tween()
 		tween.tween_method(func(t: float) -> void:
-			astronaut.position = arc_from.lerp(arc_to, t) + arc_out * 28.0 * sin(t * PI),
+			var base := anchor.position + STATION_ASTRONAUT_OFFSET.lerp(STATION_DOCK_OFFSET, t)
+			astronaut.position = base + anchor.position.normalized() * 28.0 * sin(t * PI),
 			0.0, 1.0, 0.45).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE)
 		tween.chain().tween_callback(func() -> void:
 			is_undocking = false
@@ -148,16 +147,13 @@ func _toggle_ship_interaction() -> void:
 				current_station = landing
 				_reset_docked_ship()
 				_camera_target_is_ship = false
-				astronaut.position = _dock_anchor(landing)
-				astronaut.rotation = landing.rotation
+				astronaut.position = landing.position + STATION_DOCK_OFFSET
 				astronaut.visible = true
 				astronaut.set_anim_row(1)
-				var arc_from2: Vector2 = astronaut.position
-				var arc_to2: Vector2 = landing.position + STATION_ASTRONAUT_OFFSET.rotated(landing.rotation)
-				var arc_out2: Vector2 = ((arc_from2 + arc_to2) * 0.5).normalized()
 				var tween := create_tween()
 				tween.tween_method(func(t: float) -> void:
-					astronaut.position = arc_from2.lerp(arc_to2, t) + arc_out2 * 28.0 * sin(t * PI),
+					var base := landing.position + STATION_DOCK_OFFSET.lerp(STATION_ASTRONAUT_OFFSET, t)
+					astronaut.position = base + landing.position.normalized() * 28.0 * sin(t * PI),
 					0.0, 1.0, 0.5).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE)
 				tween.chain().tween_callback(func() -> void:
 					is_docking = false
