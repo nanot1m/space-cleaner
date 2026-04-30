@@ -19,5 +19,8 @@ exports/
 *.pck
 *.zip
 
+# Web export (deployed separately to gh-pages)
+web/
+
 # macOS
 .DS_Store
