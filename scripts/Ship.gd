@@ -120,7 +120,7 @@ func deliver_all() -> int:
 	return count
 
 
-func start_docking(dock_pos: Vector2, dock_rot: float, station_pos: Vector2, on_complete: Callable) -> void:
+func start_docking(landing_station: Node2D, dock_offset: Vector2, on_complete: Callable) -> void:
 	is_piloting = false
 	velocity = Vector2.ZERO
 	throttle_amount = 0.0
@@ -134,9 +134,14 @@ func start_docking(dock_pos: Vector2, dock_rot: float, station_pos: Vector2, on_
 		if is_instance_valid(t):
 			delivered += 1
 
+	var ship_start := position
+	var dock_rot := landing_station.rotation
+
 	var tween := create_tween().set_parallel(true)
-	tween.tween_property(self, "position", dock_pos, 0.6) \
-		.set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
+	tween.tween_method(func(t: float) -> void:
+		var live_dock := World.wrapped_target_position(ship_start, landing_station.position + dock_offset)
+		position = ship_start.lerp(live_dock, t),
+		0.0, 1.0, 0.6).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
 	tween.tween_property(self, "rotation",
 		rotation + angle_difference(rotation, dock_rot), 0.6) \
 		.set_ease(Tween.EASE_IN_OUT)
@@ -145,9 +150,11 @@ func start_docking(dock_pos: Vector2, dock_rot: float, station_pos: Vector2, on_
 		var trash := departing[i] as OrbitTrash
 		if not is_instance_valid(trash):
 			continue
-		var target := World.wrapped_target_position(trash.position, station_pos)
-		tween.tween_property(trash, "position", target, 0.35) \
-			.set_delay(float(i) * 0.06) \
+		var trash_start := trash.position
+		tween.tween_method(func(t: float) -> void:
+			var live_target := World.wrapped_target_position(trash_start, landing_station.position)
+			trash.position = trash_start.lerp(live_target, t),
+			0.0, 1.0, 0.35).set_delay(float(i) * 0.06) \
 			.set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CUBIC)
 
 	tween.chain().tween_callback(func() -> void:

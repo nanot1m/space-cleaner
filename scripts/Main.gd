@@ -139,9 +139,8 @@ func _toggle_ship_interaction() -> void:
 		is_docking = true
 		_update_actor_visibility()
 		ship.start_docking(
-			_dock_anchor(landing),
-			landing.rotation,
-			landing.position,
+			landing,
+			STATION_DOCK_OFFSET,
 			func(delivered: int) -> void:
 				stored_scrap += delivered
 				current_station = landing
