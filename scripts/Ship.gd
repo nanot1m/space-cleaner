@@ -134,14 +134,13 @@ func start_docking(landing_station: Node2D, dock_offset: Vector2, on_complete: C
 		if is_instance_valid(t):
 			delivered += 1
 
-	var ship_start := position
+	var ship_offset := position - (landing_station.position + dock_offset)
 	var dock_rot := landing_station.rotation
 
 	var tween := create_tween().set_parallel(true)
 	tween.tween_method(func(t: float) -> void:
-		var live_dock := World.wrapped_target_position(ship_start, landing_station.position + dock_offset)
-		position = ship_start.lerp(live_dock, t),
-		0.0, 1.0, 0.6).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
+		position = landing_station.position + dock_offset + ship_offset * pow(1.0 - t, 2.0),
+		0.0, 1.0, 0.6)
 	tween.tween_property(self, "rotation",
 		rotation + angle_difference(rotation, dock_rot), 0.6) \
 		.set_ease(Tween.EASE_IN_OUT)
@@ -150,10 +149,9 @@ func start_docking(landing_station: Node2D, dock_offset: Vector2, on_complete: C
 		var trash := departing[i] as OrbitTrash
 		if not is_instance_valid(trash):
 			continue
-		var trash_start := trash.position
+		var cargo_offset := trash.position - landing_station.position
 		tween.tween_method(func(t: float) -> void:
-			var live_target := World.wrapped_target_position(trash_start, landing_station.position)
-			trash.position = trash_start.lerp(live_target, t),
+			trash.position = landing_station.position + cargo_offset * (1.0 - t),
 			0.0, 1.0, 0.35).set_delay(float(i) * 0.06) \
 			.set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CUBIC)
 
