@@ -16,6 +16,7 @@ var stored_scrap := 0
 var is_piloting_ship := false
 var is_docking := false
 var is_undocking := false
+var is_astronaut_exiting := false
 var _camera_target_is_ship := false
 var current_station: Node2D
 var is_panning := false
@@ -94,7 +95,7 @@ func _update_station(delta: float) -> void:
 	if not is_piloting_ship and not is_docking and current_station != null:
 		ship.position = _dock_anchor(current_station)
 		ship.rotation = current_station.rotation
-		if not is_undocking:
+		if not is_undocking and not is_astronaut_exiting:
 			astronaut.position = current_station.position + STATION_ASTRONAUT_OFFSET.rotated(current_station.rotation)
 			astronaut.rotation = current_station.rotation
 
@@ -110,7 +111,7 @@ func _update_moon_system(delta: float) -> void:
 
 
 func _toggle_ship_interaction() -> void:
-	if is_docking or is_undocking:
+	if is_docking or is_undocking or is_astronaut_exiting:
 		return
 	if not is_piloting_ship and current_station != null \
 			and World.wrapped_distance(ship.position, current_station.position) <= DOCK_DISTANCE:
@@ -145,6 +146,8 @@ func _toggle_ship_interaction() -> void:
 				stored_scrap += delivered
 				current_station = landing
 				_reset_docked_ship()
+				is_docking = false
+				is_astronaut_exiting = true
 				_camera_target_is_ship = false
 				astronaut.position = landing.position + STATION_DOCK_OFFSET
 				astronaut.visible = true
@@ -155,7 +158,7 @@ func _toggle_ship_interaction() -> void:
 					astronaut.position = base + landing.position.normalized() * 28.0 * sin(t * PI),
 					0.0, 1.0, 0.5).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE)
 				tween.chain().tween_callback(func() -> void:
-					is_docking = false
+					is_astronaut_exiting = false
 					astronaut.set_anim_row(0)
 					_update_actor_visibility()
 				)
